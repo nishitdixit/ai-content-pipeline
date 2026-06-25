@@ -1,0 +1,18 @@
+{"type": "stage.enter", "ts": 1782309539.826, "stage": "retrieve"}
+{"type": "agent.done", "ts": 1782309539.827, "agent": "Retriever", "result": "12 candidates from 12 in memory"}
+{"type": "stage.enter", "ts": 1782309539.827, "stage": "classify"}
+{"type": "agent.done", "ts": 1782309539.827, "agent": "Casting", "result": "roles: {'hero': 2, 'b_roll': 7, 'soundbite': 3, 'discard': 0}"}
+{"type": "stage.enter", "ts": 1782309539.827, "stage": "plan"}
+{"type": "director.pairing", "ts": 1782309539.827, "audio_from": "a_9989d88a:s_00", "visuals_from": "a_22eb8867:s_00"}
+{"type": "director.pairing", "ts": 1782309539.827, "audio_from": "a_532becf0:s_00", "visuals_from": "a_e3c641c2:s_00"}
+{"type": "director.pairing", "ts": 1782309539.827, "audio_from": "a_cbc275ae:s_00", "visuals_from": "a_75ce6eb8:s_00"}
+{"type": "agent.done", "ts": 1782309539.828, "agent": "Director", "result": "12 shots, 31.005s"}
+{"type": "stage.enter", "ts": 1782309539.828, "stage": "produce"}
+{"type": "agent.done", "ts": 1782309539.828, "agent": "Reframer", "result": "reframed 12 shots"}
+{"type": "agent.done", "ts": 1782309539.828, "agent": "CaptionAgent", "result": "captioned 3 soundbites"}
+{"type": "agent.done", "ts": 1782309539.828, "agent": "AudioMix", "result": "music bed 'rising_cinematic', duck -12dB"}
+{"type": "stage.enter", "ts": 1782309539.828, "stage": "critique"}
+{"type": "agent.done", "ts": 1782309539.828, "agent": "PlatformCritic", "result": "platform checks passed"}
+{"type": "agent.done", "ts": 1782309539.828, "agent": "CutQualityCritic", "result": "cut quality ok"}
+{"type": "stage.enter", "ts": 1782309539.828, "stage": "render"}
+{"type": "render.done", "ts": 1782309562.02, "output": "/home/claude/ai-video-studio/demo_project/renders/reedit/output.mp4", "rendered": true}

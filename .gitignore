@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+sample_media/
+_staged/
+demo_project/
+*.egg-info/
+.venv/
+.DS_Store

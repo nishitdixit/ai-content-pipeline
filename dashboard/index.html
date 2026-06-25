@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Video Studio — live run dashboard</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --line:#2a3240;
+    --ink:#e8edf4; --muted:#8b97a8; --dim:#5b6675;
+    --teal:#2dd4bf; --blue:#5b9dff; --amber:#f0b429; --green:#48c98a;
+    --coral:#ff7a59; --purple:#a78bfa; --red:#f0676b;
+    --mono:'SFMono-Regular',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;
+    --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{--bg:#f4f6fa;--panel:#fff;--panel2:#f0f3f8;--line:#e2e7ef;
+      --ink:#161b22;--muted:#5b6675;--dim:#97a1b0;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:24px 20px 60px}
+  header{display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--teal)}
+  .dot.live{animation:pulse 1.2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1{font-size:16px;font-weight:600;margin:0;letter-spacing:.2px}
+  .sub{color:var(--dim);font-family:var(--mono);font-size:12px}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  button,label.btn{font-family:var(--sans);font-size:13px;color:var(--ink);
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+  button:hover,label.btn:hover{background:var(--panel2)}
+  button:active{transform:scale(.98)}
+  input[type=file]{display:none}
+  .rail{display:flex;gap:6px;margin:18px 0 8px;flex-wrap:wrap}
+  .stage{font-family:var(--mono);font-size:12px;text-transform:lowercase;
+    padding:6px 12px;border-radius:7px;border:1px solid var(--line);
+    color:var(--dim);background:var(--panel)}
+  .stage.active{color:#08121c;background:var(--blue);border-color:var(--blue)}
+  .stage.done{color:var(--green);border-color:color-mix(in srgb,var(--green) 50%,transparent)}
+  .bar{height:5px;border-radius:3px;background:var(--panel2);overflow:hidden;margin:4px 0 22px}
+  .bar > span{display:block;height:100%;width:0;background:var(--blue);transition:width .25s}
+  .grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card h2{font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;
+    color:var(--muted);margin:0 0 12px}
+  .feed{font-family:var(--mono);font-size:12.5px;display:flex;flex-direction:column;gap:7px;
+    max-height:360px;overflow:auto}
+  .row{display:flex;gap:10px;align-items:baseline;opacity:0;transform:translateY(3px);
+    transition:opacity .2s,transform .2s}
+  .row.in{opacity:1;transform:none}
+  .who{flex:0 0 130px;color:var(--ink)}
+  .who.crit{color:var(--amber)} .who.pair{color:var(--purple)} .who.render{color:var(--green)}
+  .what{color:var(--muted)}
+  .tick{color:var(--green)}
+  .stat{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);
+    font-family:var(--mono);font-size:12.5px}
+  .stat:last-child{border-bottom:0}
+  .stat .k{color:var(--muted)} .stat .v{color:var(--ink)}
+  .pairing{font-family:var(--mono);font-size:12px;color:var(--muted);padding:5px 0;
+    display:flex;gap:8px;align-items:center}
+  .pairing b{color:var(--purple);font-weight:500}
+  .empty{color:var(--dim);font-family:var(--mono);font-size:12px}
+  .hint{color:var(--dim);font-size:12px;margin-top:18px;text-align:center;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="dot" id="dot"></span>
+      <div>
+        <h1>AI Video Studio</h1>
+        <div class="sub" id="proj">replaying recorded run</div>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="btn">load events.jsonl<input type="file" id="file" accept=".jsonl,.json,.txt"></label>
+      <button id="replay">▶ replay</button>
+      <button id="speed">1×</button>
+    </div>
+  </header>
+
+  <div class="rail" id="rail"></div>
+  <div class="bar"><span id="fill"></span></div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Agent activity</h2>
+      <div class="feed" id="feed"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <h2>Pairings · audio ↔ visuals</h2>
+        <div id="pairings"><div class="empty">none yet</div></div>
+      </div>
+      <div class="card">
+        <h2>Run summary</h2>
+        <div id="stats"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">events stream from the orchestrator's bus — this view is real run state, not a mock progress bar</div>
+</div>
+
+<script>
+const STAGES = ["retrieve","classify","plan","produce","critique","render"];
+const SAMPLE = [
+{"type":"stage.enter","stage":"retrieve"},
+{"type":"agent.done","agent":"Retriever","result":"12 candidates from 12 in memory"},
+{"type":"stage.enter","stage":"classify"},
+{"type":"agent.done","agent":"Casting","result":"roles: hero 2, b_roll 7, soundbite 3"},
+{"type":"stage.enter","stage":"plan"},
+{"type":"director.pairing","audio_from":"a_9989d88a:s_00","visuals_from":"a_e3c641c2:s_00"},
+{"type":"director.pairing","audio_from":"a_532becf0:s_00","visuals_from":"a_8f83c97c:s_00"},
+{"type":"director.pairing","audio_from":"a_cbc275ae:s_00","visuals_from":"a_75ce6eb8:s_00"},
+{"type":"agent.done","agent":"Director","result":"12 shots, 31.0s"},
+{"type":"stage.enter","stage":"produce"},
+{"type":"agent.done","agent":"Reframer","result":"reframed 12 shots"},
+{"type":"agent.done","agent":"CaptionAgent","result":"captioned 3 soundbites"},
+{"type":"agent.done","agent":"AudioMix","result":"music bed 'rising_cinematic', duck -12dB"},
+{"type":"stage.enter","stage":"critique"},
+{"type":"agent.done","agent":"PlatformCritic","result":"platform checks passed"},
+{"type":"agent.done","agent":"CutQualityCritic","result":"cut quality ok"},
+{"type":"stage.enter","stage":"render"},
+{"type":"render.done","output":"renders/latest/output.mp4","rendered":true}
+];
+
+let events = SAMPLE.slice();
+const rail = document.getElementById('rail');
+const feed = document.getElementById('feed');
+const fill = document.getElementById('fill');
+const pairBox = document.getElementById('pairings');
+const stats = document.getElementById('stats');
+const dot = document.getElementById('dot');
+let speeds = [1,2,4,0.5], si = 0, timer = null;
+
+function buildRail(){
+  rail.innerHTML = '';
+  STAGES.forEach(s=>{
+    const el = document.createElement('span');
+    el.className='stage'; el.dataset.s=s; el.textContent=s;
+    rail.appendChild(el);
+  });
+}
+function reset(){
+  buildRail(); feed.innerHTML=''; fill.style.width='0';
+  pairBox.innerHTML='<div class="empty">none yet</div>';
+  stats.innerHTML=''; dot.classList.add('live');
+}
+function addStat(k,v){
+  const d=document.createElement('div'); d.className='stat';
+  d.innerHTML=`<span class="k">${k}</span><span class="v">${v}</span>`;
+  stats.appendChild(d);
+}
+function apply(ev, idx, total){
+  if(ev.type==='stage.enter'){
+    rail.querySelectorAll('.stage').forEach(s=>{
+      const i=STAGES.indexOf(s.dataset.s), cur=STAGES.indexOf(ev.stage);
+      s.classList.toggle('active', i===cur);
+      if(i<cur) s.classList.add('done');
+    });
+  } else if(ev.type==='agent.done' || ev.type==='agent.running'){
+    const r=document.createElement('div'); r.className='row';
+    const cls = /Critic/.test(ev.agent)?'crit':'';
+    r.innerHTML=`<span class="who ${cls}">${ev.agent}</span>`+
+      `<span class="what"><span class="tick">✓</span> ${ev.result||ev.doing||''}</span>`;
+    feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+    feed.scrollTop=feed.scrollHeight;
+  } else if(ev.type==='director.pairing'){
+    if(pairBox.querySelector('.empty')) pairBox.innerHTML='';
+    const d=document.createElement('div'); d.className='pairing';
+    d.innerHTML=`<b>${ev.audio_from}</b> → visuals <b>${ev.visuals_from}</b>`;
+    pairBox.appendChild(d);
+    const r=document.createElement('div'); r.className='row';
+    r.innerHTML=`<span class="who pair">Director</span><span class="what">paired soundbite audio over B-roll</span>`;
+    feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+  } else if(ev.type==='render.done'){
+    const r=document.createElement('div'); r.className='row';
+    r.innerHTML=`<span class="who render">Render</span><span class="what">${ev.rendered?'✓ output ready':'script written'}: ${ev.output||''}</span>`;
+    feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+  } else if(ev.type==='critic.flag'){
+    const r=document.createElement('div'); r.className='row';
+    r.innerHTML=`<span class="who crit">${ev.agent}</span><span class="what">⚑ ${ev.issue}</span>`;
+    feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+  } else if(ev.type.startsWith('ingest.')){
+    const r=document.createElement('div'); r.className='row';
+    r.innerHTML=`<span class="who">ingest</span><span class="what">${ev.type.split('.')[1]}: ${ev.file||JSON.stringify(ev)}</span>`;
+    feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+  }
+  fill.style.width = Math.round(((idx+1)/total)*100)+'%';
+}
+function summarize(){
+  stats.innerHTML='';
+  const find=t=>events.filter(e=>e.type===t);
+  const cast=events.find(e=>e.agent==='Casting');
+  const dir=events.find(e=>e.agent==='Director');
+  const ing=events.find(e=>e.type==='ingest.done');
+  if(ing) addStat('ingest','found '+ing.found+' · new '+ing.new+' · skipped '+ing.skipped);
+  const ret=events.find(e=>e.agent==='Retriever'); if(ret) addStat('retrieved', ret.result);
+  if(cast) addStat('roles', cast.result.replace('roles:','').trim());
+  if(dir) addStat('plan', dir.result);
+  addStat('pairings', find('director.pairing').length);
+  const flags=find('critic.flag').length; addStat('critic flags', flags);
+  const rend=events.find(e=>e.type==='render.done');
+  if(rend) addStat('render', rend.rendered?'output.mp4 ✓':'script only');
+  dot.classList.remove('live');
+}
+function play(){
+  if(timer) return;
+  reset();
+  let i=0; const total=events.length;
+  const step=()=>{
+    if(i>=total){ clearTimeout(timer); timer=null; summarize(); return; }
+    apply(events[i], i, total); i++;
+    timer=setTimeout(step, 520/speeds[si]);
+  };
+  step();
+}
+document.getElementById('replay').onclick=()=>{ clearTimeout(timer); timer=null; play(); };
+document.getElementById('speed').onclick=e=>{ si=(si+1)%speeds.length; e.target.textContent=speeds[si]+'×'; };
+document.getElementById('file').onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const txt=await f.text();
+  events=txt.trim().split('\n').map(l=>{try{return JSON.parse(l)}catch{return null}}).filter(Boolean);
+  document.getElementById('proj').textContent=f.name+' · '+events.length+' events';
+  clearTimeout(timer); timer=null; play();
+};
+// try fetching a co-located events file; fall back to embedded sample
+(async()=>{
+  for(const name of ['events.jsonl','sample_events.jsonl']){
+    try{ const r=await fetch(name); if(r.ok){
+      const t=await r.text();
+      const evs=t.trim().split('\n').map(l=>{try{return JSON.parse(l)}catch{return null}}).filter(Boolean);
+      if(evs.length){ events=evs; document.getElementById('proj').textContent=name+' · '+evs.length+' events'; }
+      break;
+    }}catch(_){}
+  }
+  play();
+})();
+</script>
+</body>
+</html>

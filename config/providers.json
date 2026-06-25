@@ -1,0 +1,21 @@
+{
+  "_comment": "Active skill impl per capability. Swap mock/heuristic for hosted or self-hosted one at a time; the orchestrator and agents never change.",
+  "skills": {
+    "transcribe": "mock-asr",
+    "scene_detect": "ffmpeg-heuristic",
+    "visual_quality": "mock-heuristic",
+    "audio_quality": "mock-heuristic",
+    "speech_value": "mock-asr",
+    "emotion": "mock-heuristic",
+    "embed": "hashed-bow",
+    "reframe": "mock-track",
+    "captions": "mock-burn",
+    "music": "mock-select",
+    "render": "ffmpeg-concat"
+  },
+  "_swap_targets": {
+    "transcribe": "whisper-local | deepgram | assemblyai",
+    "visual_quality": "siglip-ft | twelvelabs-marengo | google-video-intel",
+    "embed": "siglip | text-embedding-3 | twelvelabs"
+  }
+}

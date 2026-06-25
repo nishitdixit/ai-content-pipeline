@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aivstudio"
+version = "0.1.0"
+description = "Chat-driven, agentic short-form video editor (reference implementation)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "AI Video Studio" }]
+dependencies = []   # core runs on the standard library only
+
+[project.optional-dependencies]
+# real-model adapters you add later live behind the Skill interface
+hosted = []         # e.g. openai, google-clo-videointelligence, twelvelabs
+local = []          # e.g. faster-whisper, open-clip-torch, torch
+dev = ["pytest"]
+
+[project.scripts]
+aivstudio = "aivstudio.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
