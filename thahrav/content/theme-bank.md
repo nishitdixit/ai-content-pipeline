@@ -10,8 +10,8 @@ The starting pool of video ideas. Mark an idea with its post date once it's used
 
 | # | Idea / hook | Source to verify | Used |
 |---|---|---|---|
-| 1 | Do the work, let go of the result; why worrying about the result ruins the work | Gita 2.47 | |
-| 2 | "Samatvam yoga uchyate": staying steady in success and failure *is* yoga | Gita 2.48 | |
+| 1 | Do the work, let go of the result; why worrying about the result ruins the work | Gita 2.47 | 2026-10-13 |
+| 2 | "Samatvam yoga uchyate": staying steady in success and failure *is* yoga | Gita 2.48 | 2026-10-17 |
 | 3 | Your own path done imperfectly beats someone else's path done perfectly (the comparison cure) | Gita 3.35 | |
 | 4 | Lift yourself by yourself: you are your own friend *and* your own enemy | Gita 6.5 | |
 | 5 | Sukh-dukh mausam jaise aate jaate hain: this phase will pass too | Gita 2.14 | |
@@ -35,8 +35,8 @@ The starting pool of video ideas. Mark an idea with its post date once it's used
 
 | # | Idea / hook | Used |
 |---|---|---|
-| 21 | 25 tak settle: who set this deadline? *(worked example in the script template)* | |
-| 22 | LinkedIn pe sab successful kyun lagte hain? A highlight reel vs your whole movie | |
+| 21 | 25 tak settle: who set this deadline? *(worked example in the script template)* | 2026-10-12 |
+| 22 | LinkedIn pe sab successful kyun lagte hain? A highlight reel vs your whole movie | 2026-10-16 |
 | 23 | "Sharma ji ka beta" is also anxious | |
 | 24 | Salary hike ke baad bhi khush kyun nahi? (The hedonic treadmill, explained simply) | |
 | 25 | Friends ki shaadi, ghar, gaadi: are you behind or just on a different route? | |
@@ -60,7 +60,7 @@ The starting pool of video ideas. Mark an idea with its post date once it's used
 
 | # | Idea / hook | Used |
 |---|---|---|
-| 41 | Busy hona productive hona nahi hai | |
+| 41 | Busy hona productive hona nahi hai | 2026-10-14 |
 | 42 | Din ke sirf 3 important kaam: the 3-task rule | |
 | 43 | Rest without guilt: rest is part of the work | |
 | 44 | "Na" kehna seekho: every yes is a no to something else | |
@@ -77,7 +77,7 @@ The starting pool of video ideas. Mark an idea with its post date once it's used
 
 | # | Idea / hook | Used |
 |---|---|---|
-| 53 | Subah ke pehle 20 minute: no phone | |
+| 53 | Subah ke pehle 20 minute: no phone | 2026-10-15 |
 | 54 | 4-7-8 breathing: one minute to calm down (demonstrate it) | |
 | 55 | Khaana khaate waqt sirf khaana: no screen, one meal a day | |
 | 56 | Ek gratitude line before sleep | |
@@ -94,7 +94,7 @@ The starting pool of video ideas. Mark an idea with its post date once it's used
 
 | # | Idea / hook | Used |
 |---|---|---|
-| 65 | Why I'm starting this channel: the year I just kept running | |
+| 65 | Why I'm starting this channel: the year I just kept running | 2026-10-18 |
 | 66 | Engineer ki life: deadlines, standups, and the day I stopped enjoying code | |
 | 67 | My comparison story: the batchmate whose LinkedIn I kept checking | |
 | 68 | What changed when I stopped checking my phone first thing in the morning | |
