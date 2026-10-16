@@ -25,6 +25,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": true,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 2.0
     },
     {
@@ -40,6 +44,10 @@
       "audio_in_s": 0.125,
       "audio_out_s": 3.875,
       "mute": false,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": 0,
+      "audio_src_out_s": 4.0,
       "duration_s": 3.75
     },
     {
@@ -55,6 +63,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": true,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 3.75
     },
     {
@@ -70,6 +82,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": true,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 3.75
     },
     {
@@ -85,6 +101,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": true,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 3.75
     },
     {
@@ -100,6 +120,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": true,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 3.75
     },
     {
@@ -115,6 +139,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": true,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 3.75
     },
     {
@@ -130,6 +158,10 @@
       "audio_in_s": null,
       "audio_out_s": null,
       "mute": false,
+      "src_in_s": 0,
+      "src_out_s": 4.0,
+      "audio_src_in_s": null,
+      "audio_src_out_s": null,
       "duration_s": 4.0
     }
   ]

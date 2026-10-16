@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Writes next week's scripts every Saturday at 21:00, ready for a Sunday review (macOS launchd).
+  Replace /path/to/ai-content-pipeline with your checkout, then:
+    cp examples/launchd/com.acp.plan-week.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.acp.plan-week.plist
+  Run now:   launchctl start com.acp.plan-week
+  Remove:    launchctl unload ~/Library/LaunchAgents/com.acp.plan-week.plist
+  If the Mac is asleep at 21:00, launchd runs the job when it wakes.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.acp.plan-week</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/path/to/ai-content-pipeline/.venv/bin/acp</string>
+        <string>plan-week</string>
+        <string>--events</string>
+        <string>/path/to/ai-content-pipeline/logs/plan-week-events.jsonl</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/path/to/ai-content-pipeline</string>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>6</integer>
+        <key>Hour</key>
+        <integer>21</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/path/to/ai-content-pipeline/logs/plan-week.log</string>
+    <key>StandardErrorPath</key>
+    <string>/path/to/ai-content-pipeline/logs/plan-week.log</string>
+</dict>
+</plist>

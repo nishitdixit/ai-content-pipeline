@@ -112,24 +112,55 @@
 <script>
 const STAGES = ["script","ingest","retrieve","classify","plan","produce","critique","render"];
 const SAMPLE = /*EVENTS*/[
-{"type":"stage.enter","stage":"retrieve"},
-{"type":"agent.done","agent":"Retriever","result":"12 candidates from 12 in memory"},
-{"type":"stage.enter","stage":"classify"},
-{"type":"agent.done","agent":"Casting","result":"roles: hero 2, b_roll 7, soundbite 3"},
-{"type":"stage.enter","stage":"plan"},
-{"type":"director.pairing","audio_from":"a_9989d88a:s_00","visuals_from":"a_e3c641c2:s_00"},
-{"type":"director.pairing","audio_from":"a_532becf0:s_00","visuals_from":"a_8f83c97c:s_00"},
-{"type":"director.pairing","audio_from":"a_cbc275ae:s_00","visuals_from":"a_75ce6eb8:s_00"},
-{"type":"agent.done","agent":"Director","result":"12 shots, 31.0s"},
-{"type":"stage.enter","stage":"produce"},
-{"type":"agent.done","agent":"Reframer","result":"reframed 12 shots"},
-{"type":"agent.done","agent":"CaptionAgent","result":"captioned 3 soundbites"},
-{"type":"agent.done","agent":"AudioMix","result":"music bed 'rising_cinematic', duck -12dB"},
-{"type":"stage.enter","stage":"critique"},
-{"type":"agent.done","agent":"PlatformCritic","result":"platform checks passed"},
-{"type":"agent.done","agent":"CutQualityCritic","result":"cut quality ok"},
-{"type":"stage.enter","stage":"render"},
-{"type":"render.done","output":"renders/latest/output.mp4","rendered":true}
+{"type": "stage.enter", "ts": 1792146043.813, "stage": "script"},
+{"type": "llm.usage", "ts": 1792146043.815, "provider": "mock", "model": "mock-writer", "schema": "ScriptDraft", "input_tokens": 1540, "output_tokens": 198, "cache_read_tokens": 0, "attempts": 1, "latency_ms": 1},
+{"type": "agent.done", "ts": 1792146043.817, "agent": "ScriptWriter", "result": "2026-10-19 P2: [mock] \"Sharma ji ka beta\" is also anxious (168 words, 0 to review)"},
+{"type": "stage.enter", "ts": 1792146043.821, "stage": "ingest"},
+{"type": "ingest.scan", "ts": 1792146043.821, "found": 12, "known": 0},
+{"type": "ingest.analyzing", "ts": 1792146043.821, "file": "boring_filler_dead.mp4", "i": 1, "asset": "a_9303343c"},
+{"type": "ingest.analyzed", "ts": 1792146043.821, "file": "boring_filler_dead.mp4", "asset": "a_9303343c", "segments": 1},
+{"type": "ingest.analyzing", "ts": 1792146043.821, "file": "climb_grind_wide.mp4", "i": 2, "asset": "a_a1eb9cb4"},
+{"type": "ingest.analyzed", "ts": 1792146043.822, "file": "climb_grind_wide.mp4", "asset": "a_a1eb9cb4", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.822, "file": "dream_vista_drone.mp4", "i": 3, "asset": "a_2787645e"},
+{"type": "ingest.analyzed", "ts": 1792146043.822, "file": "dream_vista_drone.mp4", "asset": "a_2787645e", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.822, "file": "finish_hero_peak.mp4", "i": 4, "asset": "a_00090cc3"},
+{"type": "ingest.analyzed", "ts": 1792146043.823, "file": "finish_hero_peak.mp4", "asset": "a_00090cc3", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.823, "file": "grind_coast_scenery.mp4", "i": 5, "asset": "a_78cae76e"},
+{"type": "ingest.analyzed", "ts": 1792146043.823, "file": "grind_coast_scenery.mp4", "asset": "a_78cae76e", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.823, "file": "motivational_rise_wide.mp4", "i": 6, "asset": "a_0ed87227"},
+{"type": "ingest.analyzed", "ts": 1792146043.824, "file": "motivational_rise_wide.mp4", "asset": "a_0ed87227", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.824, "file": "push_vlog_talk.mp4", "i": 7, "asset": "a_f4b8a70f"},
+{"type": "ingest.analyzed", "ts": 1792146043.825, "file": "push_vlog_talk.mp4", "asset": "a_f4b8a70f", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.825, "file": "ride_coast_wide.mp4", "i": 8, "asset": "a_16b839a7"},
+{"type": "ingest.analyzed", "ts": 1792146043.825, "file": "ride_coast_wide.mp4", "asset": "a_16b839a7", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.825, "file": "rise_speech_line.mp4", "i": 9, "asset": "a_46ae75a4"},
+{"type": "ingest.analyzed", "ts": 1792146043.825, "file": "rise_speech_line.mp4", "asset": "a_46ae75a4", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.826, "file": "struggle_speech_quote.mp4", "i": 10, "asset": "a_bd724d19"},
+{"type": "ingest.analyzed", "ts": 1792146043.826, "file": "struggle_speech_quote.mp4", "asset": "a_bd724d19", "segments": 2},
+{"type": "ingest.analyzing", "ts": 1792146043.826, "file": "sunrise_ridge_drone.mp4", "i": 11, "asset": "a_8788b6bc"},
+{"type": "ingest.analyzed", "ts": 1792146043.826, "file": "sunrise_ridge_drone.mp4", "asset": "a_8788b6bc", "segments": 3},
+{"type": "ingest.analyzing", "ts": 1792146043.826, "file": "triumph_summit_hero.mp4", "i": 12, "asset": "a_73f18b71"},
+{"type": "ingest.analyzed", "ts": 1792146043.827, "file": "triumph_summit_hero.mp4", "asset": "a_73f18b71", "segments": 3},
+{"type": "ingest.done", "ts": 1792146043.828, "found": 12, "new": 12, "skipped": 0},
+{"type": "stage.enter", "ts": 1792146043.83, "stage": "retrieve"},
+{"type": "agent.done", "ts": 1792146043.83, "agent": "Retriever", "result": "25 candidates from 25 in memory"},
+{"type": "stage.enter", "ts": 1792146043.83, "stage": "classify"},
+{"type": "agent.done", "ts": 1792146043.83, "agent": "Casting", "result": "roles: hero 5, b_roll 17, soundbite 3, discard 0"},
+{"type": "stage.enter", "ts": 1792146043.83, "stage": "plan"},
+{"type": "director.pairing", "ts": 1792146043.831, "audio_from": "a_bd724d19:s_00", "visuals_from": "a_0ed87227:s_00"},
+{"type": "director.pairing", "ts": 1792146043.831, "audio_from": "a_46ae75a4:s_01", "visuals_from": "a_8788b6bc:s_00"},
+{"type": "director.pairing", "ts": 1792146043.831, "audio_from": "a_f4b8a70f:s_01", "visuals_from": "a_16b839a7:s_01"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "Director", "result": "15 shots, 55.0s"},
+{"type": "stage.enter", "ts": 1792146043.831, "stage": "produce"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "CaptionAgent", "result": "hook text on shot 1: '\"Sharma ji ka beta\" is also anxious'"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "Reframer", "result": "reframed 15 shots"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "CaptionAgent", "result": "captioned 4 soundbites"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "AudioMix", "result": "music bed 'subtle_bed', duck -12dB"},
+{"type": "stage.enter", "ts": 1792146043.831, "stage": "critique"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "PlatformCritic", "result": "platform checks passed"},
+{"type": "agent.done", "ts": 1792146043.831, "agent": "CutQualityCritic", "result": "cut quality ok"},
+{"type": "stage.enter", "ts": 1792146043.831, "stage": "render"},
+{"type": "render.done", "ts": 1792146043.832, "output": null, "rendered": false, "shots": 15, "duration_s": 55.0}
 ]/*END_EVENTS*/;
 
 let events = SAMPLE.slice();
@@ -176,7 +207,7 @@ function apply(ev, idx, total){
     const r=document.createElement('div'); r.className='row';
     const cls = /Critic/.test(ev.agent)?'crit':'';
     r.innerHTML=`<span class="who ${cls}">${ev.agent}</span>`+
-      `<span class="what"><span class="tick">✓</span> ${ev.result||ev.doing||''}</span>`;
+      `<span class="what">${ev.type==='agent.running'?'↻':'<span class="tick">✓</span>'} ${ev.result||ev.doing||''}</span>`;
     feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
     feed.scrollTop=feed.scrollHeight;
   } else if(ev.type==='director.pairing'){
@@ -189,7 +220,7 @@ function apply(ev, idx, total){
     feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
   } else if(ev.type==='render.done'){
     const r=document.createElement('div'); r.className='row';
-    r.innerHTML=`<span class="who render">Render</span><span class="what">${ev.rendered?'✓ output ready':'script written'}: ${ev.output||''}</span>`;
+    r.innerHTML=`<span class="who render">Render</span><span class="what">${ev.rendered?'✓ output.mp4 ready':'✓ EDL + render.sh written (no ffmpeg on this machine)'}</span>`;
     feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
   } else if(ev.type==='critic.flag'){
     const r=document.createElement('div'); r.className='row';
@@ -219,11 +250,12 @@ function summarize(){
   if(ing) addStat('ingest','found '+ing.found+' · new '+ing.new+' · skipped '+ing.skipped);
   const ret=events.find(e=>e.agent==='Retriever'); if(ret) addStat('retrieved', ret.result);
   if(cast) addStat('roles', cast.result.replace('roles:','').trim());
-  if(dir) addStat('plan', dir.result);
+  const rend=events.find(e=>e.type==='render.done');
+  if(dir) addStat('first plan', dir.result);
+  if(rend && rend.shots) addStat('final cut', rend.shots+' shots, '+Number(rend.duration_s).toFixed(1)+'s');
   addStat('pairings', find('director.pairing').length);
   const flags=find('critic.flag').length; addStat('critic flags', flags);
-  const rend=events.find(e=>e.type==='render.done');
-  if(rend) addStat('render', rend.rendered?'output.mp4 ✓':'script only');
+  if(rend) addStat('render', rend.rendered?'output.mp4 ✓':'EDL + render.sh');
   dot.classList.remove('live');
 }
 function play(){
