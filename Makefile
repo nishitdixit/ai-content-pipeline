@@ -1,7 +1,17 @@
-.PHONY: demo test ingest clean
+.PHONY: install demo test lint clean
+
+install:
+	python -m venv .venv && .venv/bin/pip install -e ".[all,dev]"
+
 demo:
-	python examples/run_demo.py
+	acp demo
+
 test:
-	PYTHONPATH=src python -m unittest discover -s tests -v
+	pytest
+
+lint:
+	ruff check src tests
+
 clean:
-	rm -rf sample_media _staged demo_project src/*.egg-info **/__pycache__
+	rm -rf demo_run sample_media src/*.egg-info .pytest_cache .ruff_cache
+	find . -name __pycache__ -type d -prune -exec rm -rf {} +

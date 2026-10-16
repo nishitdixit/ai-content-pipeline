@@ -1,0 +1,10 @@
+{
+  "style": "calm_talking_head",
+  "_comment": "Face-to-camera explainer: the spoken take carries the video, B-roll covers it, slow cuts.",
+  "thresholds": {"high": 0.7, "mid": 0.45},
+  "weights": {"semantic": 0.45, "emotion": 0.25, "usable": 0.2, "visual": 0.1},
+  "platform_rules": {"reels": {"max_s": 90, "hook_window_s": 1.5},
+                     "shorts": {"max_s": 60, "hook_window_s": 1.0},
+                     "tiktok": {"max_s": 180, "hook_window_s": 1.0}},
+  "music": "subtle_bed"
+}

@@ -1,6 +1,0 @@
-# Core requires nothing beyond the Python standard library + ffmpeg on PATH.
-# Real perception adapters are optional and added behind the Skill interface, e.g.:
-#   faster-whisper        # transcription (self-host)
-#   open-clip-torch torch # visual embeddings / quality (self-host)
-#   google-cloud-videointelligence  # hosted visual understanding
-#   twelvelabs            # hosted video understanding (Marengo/Pegasus)

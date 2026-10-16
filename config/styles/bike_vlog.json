@@ -1,0 +1,9 @@
+{
+  "style": "bike_vlog",
+  "thresholds": {"high": 0.68, "mid": 0.42},
+  "weights": {"semantic": 0.25, "emotion": 0.2, "usable": 0.3, "visual": 0.25},
+  "platform_rules": {"reels": {"max_s": 90, "hook_window_s": 1.5},
+                     "shorts": {"max_s": 60, "hook_window_s": 1.0},
+                     "tiktok": {"max_s": 180, "hook_window_s": 1.0}},
+  "music": "driving_beat"
+}

@@ -1,9 +1,0 @@
-{
-  "profile": "motivational",
-  "thresholds": {"high": 0.7, "mid": 0.45},
-  "weights": {"semantic": 0.35, "emotion": 0.35, "usable": 0.15, "visual": 0.15},
-  "platform_rules": {"reels": {"max_s": 90, "hook_window_s": 1.5},
-                     "shorts": {"max_s": 60, "hook_window_s": 1.0},
-                     "tiktok": {"max_s": 180, "hook_window_s": 1.0}},
-  "music": "rising_cinematic"
-}

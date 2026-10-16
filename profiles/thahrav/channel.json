@@ -1,0 +1,48 @@
+{
+  "name": "Thahrav",
+  "tagline": "Ruko. Saans lo. Zindagi race nahi hai.",
+  "language": "Hinglish (Roman script)",
+  "duration_s": 60,
+  "words": {"min": 110, "max": 190, "target": "130-160"},
+
+  "pillars": [
+    {"code": "P1", "name": "Purani Wisdom",
+     "description": "One idea from the Gita, Upanishads, Kabir, Chanakya or folk wisdom, applied to a modern problem"},
+    {"code": "P2", "name": "Rush Reframes",
+     "description": "Taking apart the myths that make people rush: timelines, comparison, FOMO, 'settle ho jao'"},
+    {"code": "P3", "name": "Gentle Productivity",
+     "description": "Doing fewer things better, rest without guilt, focus, saying no"},
+    {"code": "P4", "name": "Chhoti Practices",
+     "description": "One tiny practice to try today: breathing, a phone-free morning, a walk, a gratitude line"},
+    {"code": "P5", "name": "Meri Kahani",
+     "description": "The creator's own experience as an engineer who used to rush, and what they're learning"}
+  ],
+  "wisdom_pillar": "P1",
+  "personal_pillar": "P5",
+
+  "series": [
+    {"name": "Ruko Zara", "pillar": "P2",
+     "description": "Start with a common rushing behaviour, then pause and reframe it"},
+    {"name": "Gita ki Ek Line", "pillar": "P1", "source_contains": "gita",
+     "description": "One verse with chapter.verse cited, a plain meaning, and a modern application"},
+    {"name": "Aaj ka Ek Kaam", "pillar": "P4",
+     "description": "One small action for today"},
+    {"name": "Comment ka Jawab", "manual": true,
+     "description": "Answering a viewer comment"}
+  ],
+
+  "weekly_rotation": ["P2", "P1", "P3", "P4", "P2", "P1", "P5"],
+
+  "verb_form": "masculine",
+  "verb_examples": {
+    "masculine": "main bhi aisa sochta tha, main bhaagta raha",
+    "feminine": "main bhi aisa sochti thi, main bhaagti rahi"
+  },
+
+  "sensitive_topic_footer": {
+    "marker": "14416",
+    "line": "Agar ye feeling bahut heavy hai, kisi se baat karo — dost, family, ya professional. Tele-MANAS helpline 14416 pe free baat kar sakte ho."
+  },
+
+  "edit": {"style": "calm_talking_head", "platform": "shorts", "avg_shot_s": 5}
+}

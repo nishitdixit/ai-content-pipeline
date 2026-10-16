@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI Video Studio — live run dashboard</title>
+<title>AI Content Pipeline — run dashboard</title>
 <style>
   :root{
     --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --line:#2a3240;
@@ -56,6 +56,7 @@
   .row.in{opacity:1;transform:none}
   .who{flex:0 0 130px;color:var(--ink)}
   .who.crit{color:var(--amber)} .who.pair{color:var(--purple)} .who.render{color:var(--green)}
+  .who.llm{color:var(--teal)} .who.ing{color:var(--blue)}
   .what{color:var(--muted)}
   .tick{color:var(--green)}
   .stat{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);
@@ -75,7 +76,7 @@
     <div class="brand">
       <span class="dot" id="dot"></span>
       <div>
-        <h1>AI Video Studio</h1>
+        <h1>AI Content Pipeline</h1>
         <div class="sub" id="proj">replaying recorded run</div>
       </div>
     </div>
@@ -105,12 +106,12 @@
       </div>
     </div>
   </div>
-  <div class="hint">events stream from the orchestrator's bus — this view is real run state, not a mock progress bar</div>
+  <div class="hint">every stage emits to one event bus: script writer, ingest and the edit agents. This view replays real run state.</div>
 </div>
 
 <script>
-const STAGES = ["retrieve","classify","plan","produce","critique","render"];
-const SAMPLE = [
+const STAGES = ["script","ingest","retrieve","classify","plan","produce","critique","render"];
+const SAMPLE = /*EVENTS*/[
 {"type":"stage.enter","stage":"retrieve"},
 {"type":"agent.done","agent":"Retriever","result":"12 candidates from 12 in memory"},
 {"type":"stage.enter","stage":"classify"},
@@ -129,7 +130,7 @@ const SAMPLE = [
 {"type":"agent.done","agent":"CutQualityCritic","result":"cut quality ok"},
 {"type":"stage.enter","stage":"render"},
 {"type":"render.done","output":"renders/latest/output.mp4","rendered":true}
-];
+]/*END_EVENTS*/;
 
 let events = SAMPLE.slice();
 const rail = document.getElementById('rail');
@@ -147,6 +148,12 @@ function buildRail(){
     el.className='stage'; el.dataset.s=s; el.textContent=s;
     rail.appendChild(el);
   });
+}
+function row(who, cls, what){
+  const r=document.createElement('div'); r.className='row';
+  r.innerHTML=`<span class="who ${cls}">${who}</span><span class="what">${what}</span>`;
+  feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+  feed.scrollTop=feed.scrollHeight;
 }
 function reset(){
   buildRail(); feed.innerHTML=''; fill.style.width='0';
@@ -188,10 +195,14 @@ function apply(ev, idx, total){
     const r=document.createElement('div'); r.className='row';
     r.innerHTML=`<span class="who crit">${ev.agent}</span><span class="what">⚑ ${ev.issue}</span>`;
     feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
-  } else if(ev.type.startsWith('ingest.')){
-    const r=document.createElement('div'); r.className='row';
-    r.innerHTML=`<span class="who">ingest</span><span class="what">${ev.type.split('.')[1]}: ${ev.file||JSON.stringify(ev)}</span>`;
-    feed.appendChild(r); requestAnimationFrame(()=>r.classList.add('in'));
+  } else if(ev.type==='llm.usage'){
+    row('LLM · '+ev.provider, 'llm', `${ev.schema}: ${ev.input_tokens} in / ${ev.output_tokens} out tokens · ${ev.latency_ms} ms`);
+  } else if(ev.type==='ingest.done'){
+    row('Ingest', 'ing', `<span class="tick">✓</span> ${ev.new} analyzed, ${ev.skipped} already in memory`);
+  } else if(ev.type==='ingest.analyzed'){
+    row('Ingest', 'ing', `${ev.file} → ${ev.segments} segment${ev.segments===1?'':'s'}`);
+  } else if(ev.type==='ingest.skip'){
+    row('Ingest', 'ing', `${ev.file}: already analyzed, skipped`);
   }
   fill.style.width = Math.round(((idx+1)/total)*100)+'%';
 }
@@ -200,6 +211,10 @@ function summarize(){
   const find=t=>events.filter(e=>e.type===t);
   const cast=events.find(e=>e.agent==='Casting');
   const dir=events.find(e=>e.agent==='Director');
+  const writer=events.filter(e=>e.agent==='ScriptWriter' && e.type==='agent.done');
+  if(writer.length) addStat('scripts', writer.length+' written');
+  const usage=find('llm.usage');
+  if(usage.length) addStat('llm tokens', usage.reduce((a,u)=>a+u.input_tokens,0)+' in / '+usage.reduce((a,u)=>a+u.output_tokens,0)+' out ('+usage[0].provider+')');
   const ing=events.find(e=>e.type==='ingest.done');
   if(ing) addStat('ingest','found '+ing.found+' · new '+ing.new+' · skipped '+ing.skipped);
   const ret=events.find(e=>e.agent==='Retriever'); if(ret) addStat('retrieved', ret.result);

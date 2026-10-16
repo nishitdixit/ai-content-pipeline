@@ -1,24 +1,43 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "aivstudio"
-version = "0.1.0"
-description = "Chat-driven, agentic short-form video editor (reference implementation)"
+name = "ai-content-pipeline"
+version = "0.2.0"
+description = "Scripts in your voice, edited into shorts: an LLM script writer and an agentic video editor in one pipeline"
 readme = "README.md"
-requires-python = ">=3.10"
-authors = [{ name = "AI Video Studio" }]
-dependencies = []   # core runs on the standard library only
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Nishit Dixit" }]
+dependencies = [
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+]
 
 [project.optional-dependencies]
-# real-model adapters you add later live behind the Skill interface
-hosted = []         # e.g. openai, google-clo-videointelligence, twelvelabs
-local = []          # e.g. faster-whisper, open-clip-torch, torch
-dev = ["pytest"]
+claude = ["anthropic>=0.70"]
+groq = ["groq>=0.30"]
+notion = ["notion-client>=2.2,<3"]
+all = ["ai-content-pipeline[claude,groq,notion]"]
+dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]
-aivstudio = "aivstudio.cli:main"
+acp = "content_pipeline.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests/writer"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E701", "E702", "E731", "B905"]

@@ -1,8 +1,22 @@
+# Secrets
+.env
+
+# Python
+.venv/
 __pycache__/
 *.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Runs and media (never committed)
+demo_run/
 sample_media/
 _staged/
 demo_project/
-*.egg-info/
-.venv/
+*.mp4
+*.mov
+profiles/*/compare/
+logs/
+
 .DS_Store
