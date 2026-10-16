@@ -60,7 +60,7 @@ class NarrativeDirectorAgent(Agent):
             bb.roles[s.seg_id] = roles
         n = {r: sum(1 for s in bb.segments if r in s.roles)
              for r in ("hero", "b_roll", "soundbite", "discard")}
-        emit("agent.done", agent="Casting", result=f"roles: {n}")
+        emit("agent.done", agent="Casting", result="roles: " + ", ".join(f"{r} {c}" for r, c in n.items()))
 
     # phase 2: plan
     def run(self, bb: Blackboard, ctx: dict[str, Any]) -> None:
@@ -78,6 +78,9 @@ class NarrativeDirectorAgent(Agent):
                         key=lambda s: s.scores.get("visual_quality", 0)
                         + s.scores.get("audio_quality", 0)
                         + s.scores.get("emotion", 0), reverse=True)
+        # one hero beat per source clip: windows of the same take are one moment, not a staircase
+        seen: set[str] = set()
+        heroes = [h for h in heroes if not (h.proxy_path in seen or seen.add(h.proxy_path))]
         soundbites = sorted((s for s in segs if "soundbite" in s.roles),
                             key=lambda s: s.scores.get("speech_value", 0)
                             + s.scores.get("emotion", 0), reverse=True)
@@ -115,7 +118,7 @@ class NarrativeDirectorAgent(Agent):
                 _mark(h)
                 a, b = _window(h, want)
                 timeline.append(EdlClip(
-                    source=h.proxy_path, in_s=a, out_s=b, role="hero",
+                    source=h.proxy_path, in_s=a, out_s=b, role="hero", src_in_s=h.in_s, src_out_s=h.out_s,
                     reason=("closing summit — strongest hero, full frame, longest hold"
                             if is_finale else "hero beat — re-lifts momentum on the staircase"),
                     captions=False, reframe="center_safe",
@@ -133,11 +136,12 @@ class NarrativeDirectorAgent(Agent):
                 emit("director.pairing", audio_from=sb.seg_id,
                      visuals_from=(cover.seg_id if cover else sb.seg_id))
                 timeline.append(EdlClip(
-                    source=vis.proxy_path, in_s=a, out_s=b, role="soundbite",
+                    source=vis.proxy_path, in_s=a, out_s=b, role="soundbite", src_in_s=vis.in_s, src_out_s=vis.out_s,
                     reason="soundbite — strong spoken line over covering B-roll",
                     captions=True, caption_text=sb.transcript,
                     reframe="track_subject",
                     audio_from=sb.proxy_path, audio_in_s=sa, audio_out_s=sb_e,
+                    audio_src_in_s=sb.in_s, audio_src_out_s=sb.out_s,
                 ))
             else:
                 pick = self._pick_broll(broll, used_broll, used_sources, prev_source)
@@ -147,7 +151,7 @@ class NarrativeDirectorAgent(Agent):
                 a, b = _window(pick, want)
                 hook = pos == 0
                 timeline.append(EdlClip(
-                    source=pick.proxy_path, in_s=a, out_s=b, role="b_roll",
+                    source=pick.proxy_path, in_s=a, out_s=b, role="b_roll", src_in_s=pick.in_s, src_out_s=pick.out_s,
                     reason=("opening hook — strongest visual to stop the scroll"
                             if hook else "B-roll — muted, music bed carries it"),
                     mute=True, reframe="center_safe",

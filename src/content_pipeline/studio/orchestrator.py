@@ -77,7 +77,8 @@ class Orchestrator:
         # 7) render
         emit("stage.enter", stage="render")
         render = self.skills.get("render").run(edl=edl, out_dir=out_dir, execute=execute)
-        emit("render.done", output=render.get("output_path"), rendered=render.get("rendered"))
+        emit("render.done", output=render.get("output_path"), rendered=render.get("rendered"),
+             shots=len(edl.timeline), duration_s=edl.total_duration_s)
 
         return {"edl": edl.to_dict(), "render": render,
                 "candidates": [{"seg_id": c.segment.seg_id, "total": c.total,
@@ -120,6 +121,19 @@ class Orchestrator:
         k = max(0.0, target - opening.duration_s) / cur
         for c in rest:
             new = max(0.6, c.duration_s * k)
-            c.out_s = round(c.in_s + new, 3)
-            if c.audio_from and c.audio_out_s is not None and c.audio_in_s is not None:
-                c.audio_out_s = round(c.audio_in_s + new, 3)
+            if c.src_in_s is not None and c.src_out_s is not None:
+                new = min(new, c.src_out_s - c.src_in_s)        # never past the source segment
+            if c.audio_from and c.audio_src_in_s is not None and c.audio_src_out_s is not None:
+                new = min(new, c.audio_src_out_s - c.audio_src_in_s)
+            c.in_s, c.out_s = _fit(c.in_s, new, c.src_in_s, c.src_out_s)
+            if c.audio_from and c.audio_in_s is not None:
+                c.audio_in_s, c.audio_out_s = _fit(c.audio_in_s, new, c.audio_src_in_s, c.audio_src_out_s)
+
+
+def _fit(start: float, length: float, lo: float | None, hi: float | None) -> tuple[float, float]:
+    """A `length`-second window starting near `start`, shifted back if needed to stay inside [lo, hi]."""
+    if hi is not None and start + length > hi:
+        start = hi - length
+    if lo is not None:
+        start = max(lo, start)
+    return round(start, 3), round(start + length, 3)

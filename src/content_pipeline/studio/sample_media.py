@@ -7,7 +7,7 @@ these hint tokens as a stand-in for what real vision/ASR models detect):
   *_summit / *_hero            -> strong on both (hero)
   *_filler                     -> weak on both (discard)
 
-Clips are 3-4s, vertical-friendly, with a sine tone so audio exists. Without
+Clips are 6-9s (long enough to be windowed like real takes), vertical-friendly, with a sine tone so audio exists. Without
 ffmpeg, each clip is a small placeholder file plus a `.meta.json` duration
 sidecar: perception, retrieval, directing and the EDL all still run, and only
 the final encode is skipped.
@@ -21,18 +21,18 @@ import sys
 from pathlib import Path
 
 CLIPS = [
-    ("ride_coast_wide", "c=0x1b4965", 3.0, 220),
-    ("sunrise_ridge_drone", "c=0xe8a33d", 3.5, 180),
-    ("climb_grind_wide", "c=0x5fa8d3", 3.0, 200),
-    ("dream_vista_drone", "c=0x2b6777", 3.0, 190),
-    ("rise_speech_line", "c=0x3d2b56", 3.0, 330),
-    ("push_vlog_talk", "c=0x4a4063", 3.0, 350),
-    ("struggle_speech_quote", "c=0x2c2c34", 3.0, 300),
-    ("triumph_summit_hero", "c=0xf4a261", 4.0, 260),
-    ("finish_hero_peak", "c=0xe76f51", 3.5, 280),
-    ("motivational_rise_wide", "c=0x264653", 3.0, 210),
-    ("grind_coast_scenery", "c=0x457b9d", 3.0, 195),
-    ("boring_filler_dead", "c=0x6c757d", 2.5, 120),
+    ("ride_coast_wide", "c=0x1b4965", 8.0, 220),
+    ("sunrise_ridge_drone", "c=0xe8a33d", 9.0, 180),
+    ("climb_grind_wide", "c=0x5fa8d3", 8.0, 200),
+    ("dream_vista_drone", "c=0x2b6777", 8.0, 190),
+    ("rise_speech_line", "c=0x3d2b56", 7.0, 330),
+    ("push_vlog_talk", "c=0x4a4063", 8.0, 350),
+    ("struggle_speech_quote", "c=0x2c2c34", 7.0, 300),
+    ("triumph_summit_hero", "c=0xf4a261", 9.0, 260),
+    ("finish_hero_peak", "c=0xe76f51", 8.0, 280),
+    ("motivational_rise_wide", "c=0x264653", 8.0, 210),
+    ("grind_coast_scenery", "c=0x457b9d", 8.0, 195),
+    ("boring_filler_dead", "c=0x6c757d", 6.0, 120),
 ]
 
 

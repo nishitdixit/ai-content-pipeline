@@ -51,7 +51,7 @@ def test_edit_request_comes_from_script_and_channel(channel):
     brief, overrides, style = edit_request(read_script(SAMPLE_SCRIPT), channel)
     assert style == "calm_talking_head"
     assert overrides["duration_s"] == 60 and overrides["platform"] == "shorts"
-    assert overrides["shots"] == 12  # 60s at ~5s a shot
+    assert overrides["shots"] == 15  # 60s at ~4s a shot
     assert overrides["hook_text"] == read_script(SAMPLE_SCRIPT).on_screen_hook
     assert "25 tak settle" in brief
 
@@ -122,7 +122,10 @@ def test_demo_runs_the_whole_pipeline_offline(tmp_path, capsys):
     assert any(e["type"] == "llm.usage" for e in events)
     assert any(e.get("agent") == "ScriptWriter" for e in events)
     edl = json.loads((work / "project" / "renders" / "latest" / "edl.json").read_text())
-    assert edl["variant_label"] == "from-script" and edl["shot_count"] == 12
+    assert edl["variant_label"] == "from-script" and edl["shot_count"] == 15
+    for shot in edl["timeline"]:  # revisions never run past the footage they were cut from
+        assert shot["src_in_s"] - 1e-6 <= shot["in_s"] and shot["out_s"] <= shot["src_out_s"] + 1e-6
+    assert abs(edl["total_duration_s"] - 60) <= 9  # inside the platform critic's tolerance
     assert list((work / "profile" / "scripts").glob("*.md"))
     assert "/*EVENTS*/" in (work / "dashboard.html").read_text()
     # the demo works on a copy: the real profile's theme bank is untouched

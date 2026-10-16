@@ -25,6 +25,11 @@ class EdlClip:
     audio_in_s: float | None = None
     audio_out_s: float | None = None
     mute: bool = False
+    # bounds of the source segments the shot was cut from; revisions stay inside them
+    src_in_s: float | None = None
+    src_out_s: float | None = None
+    audio_src_in_s: float | None = None
+    audio_src_out_s: float | None = None
 
     @property
     def duration_s(self) -> float:
